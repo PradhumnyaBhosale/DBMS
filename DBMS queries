@@ -1,0 +1,313 @@
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database dbms;
+Query OK, 1 row affected (0.12 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| Bankbalance        |
+| IT2229             |
+| bankba             |
+| bankbal            |
+| db                 |
+| dbms               |
+| employee           |
+| info               |
+| information_schema |
+| mysql              |
+| new                |
+| performance_schema |
+| sys                |
+| user               |
++--------------------+
+14 rows in set (0.01 sec)
+
+mysql> use employee;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++--------------------+
+| Tables_in_employee |
++--------------------+
+| department         |
+| employee           |
+| project            |
+| workson            |
++--------------------+
+4 rows in set (0.01 sec)
+
+mysql> select * from workson;
+Empty set (0.00 sec)
+
+mysql> select * from department;
++-----------+----------+---------+
+| dept_name | building | budget  |
++-----------+----------+---------+
+| IT        | b        | 2600000 |
+| CS        | A        | 2700000 |
+| mech      | C        | 2800000 |
+| civil     | a        |  450000 |
+| AR        | s        | 4500000 |
++-----------+----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select * from employee;
++--------+--------+--------+-----------+
+| emp_id | name   | salary | dept_name |
++--------+--------+--------+-----------+
+|      1 | andy   | 100000 | IT        |
+|      2 | akash  | 200000 | cs        |
+|      3 | bhavik | 300000 | mech      |
+|      3 | sharad |  19000 | csbs      |
+|      4 | vedu   |  19000 | Civil     |
++--------+--------+--------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
+    -> FROM Orders
+    -> INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
+ERROR 1146 (42S02): Table 'employee.Orders' doesn't exist
+mysql> SELECT* FROM department INNER JOIN employee ON department.dept_name=employee.dept_name;
++-----------+----------+---------+--------+--------+--------+-----------+
+| dept_name | building | budget  | emp_id | name   | salary | dept_name |
++-----------+----------+---------+--------+--------+--------+-----------+
+| IT        | b        | 2600000 |      1 | andy   | 100000 | IT        |
+| CS        | A        | 2700000 |      2 | akash  | 200000 | cs        |
+| mech      | C        | 2800000 |      3 | bhavik | 300000 | mech      |
+| civil     | a        |  450000 |      4 | vedu   |  19000 | Civil     |
++-----------+----------+---------+--------+--------+--------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT* FROM department LEFT JOIN employee ON department.dept_name=employee.dept_name;
++-----------+----------+---------+--------+--------+--------+-----------+
+| dept_name | building | budget  | emp_id | name   | salary | dept_name |
++-----------+----------+---------+--------+--------+--------+-----------+
+| IT        | b        | 2600000 |      1 | andy   | 100000 | IT        |
+| CS        | A        | 2700000 |      2 | akash  | 200000 | cs        |
+| mech      | C        | 2800000 |      3 | bhavik | 300000 | mech      |
+| civil     | a        |  450000 |      4 | vedu   |  19000 | Civil     |
+| AR        | s        | 4500000 |   NULL | NULL   |   NULL | NULL      |
++-----------+----------+---------+--------+--------+--------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT* FROM department RIGHT JOIN employee ON department.dept_name=employee.dept_name;
++-----------+----------+---------+--------+--------+--------+-----------+
+| dept_name | building | budget  | emp_id | name   | salary | dept_name |
++-----------+----------+---------+--------+--------+--------+-----------+
+| IT        | b        | 2600000 |      1 | andy   | 100000 | IT        |
+| CS        | A        | 2700000 |      2 | akash  | 200000 | cs        |
+| mech      | C        | 2800000 |      3 | bhavik | 300000 | mech      |
+| NULL      | NULL     |    NULL |      3 | sharad |  19000 | csbs      |
+| civil     | a        |  450000 |      4 | vedu   |  19000 | Civil     |
++-----------+----------+---------+--------+--------+--------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT* FROM department CROSS JOIN employee ON department.dept_name=employee.dept_name;
++-----------+----------+---------+--------+--------+--------+-----------+
+| dept_name | building | budget  | emp_id | name   | salary | dept_name |
++-----------+----------+---------+--------+--------+--------+-----------+
+| IT        | b        | 2600000 |      1 | andy   | 100000 | IT        |
+| CS        | A        | 2700000 |      2 | akash  | 200000 | cs        |
+| mech      | C        | 2800000 |      3 | bhavik | 300000 | mech      |
+| civil     | a        |  450000 |      4 | vedu   |  19000 | Civil     |
++-----------+----------+---------+--------+--------+--------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT* FROM department CROSS JOIN employee;
++-----------+----------+---------+--------+--------+--------+-----------+
+| dept_name | building | budget  | emp_id | name   | salary | dept_name |
++-----------+----------+---------+--------+--------+--------+-----------+
+| AR        | s        | 4500000 |      1 | andy   | 100000 | IT        |
+| civil     | a        |  450000 |      1 | andy   | 100000 | IT        |
+| mech      | C        | 2800000 |      1 | andy   | 100000 | IT        |
+| CS        | A        | 2700000 |      1 | andy   | 100000 | IT        |
+| IT        | b        | 2600000 |      1 | andy   | 100000 | IT        |
+| AR        | s        | 4500000 |      2 | akash  | 200000 | cs        |
+| civil     | a        |  450000 |      2 | akash  | 200000 | cs        |
+| mech      | C        | 2800000 |      2 | akash  | 200000 | cs        |
+| CS        | A        | 2700000 |      2 | akash  | 200000 | cs        |
+| IT        | b        | 2600000 |      2 | akash  | 200000 | cs        |
+| AR        | s        | 4500000 |      3 | bhavik | 300000 | mech      |
+| civil     | a        |  450000 |      3 | bhavik | 300000 | mech      |
+| mech      | C        | 2800000 |      3 | bhavik | 300000 | mech      |
+| CS        | A        | 2700000 |      3 | bhavik | 300000 | mech      |
+| IT        | b        | 2600000 |      3 | bhavik | 300000 | mech      |
+| AR        | s        | 4500000 |      3 | sharad |  19000 | csbs      |
+| civil     | a        |  450000 |      3 | sharad |  19000 | csbs      |
+| mech      | C        | 2800000 |      3 | sharad |  19000 | csbs      |
+| CS        | A        | 2700000 |      3 | sharad |  19000 | csbs      |
+| IT        | b        | 2600000 |      3 | sharad |  19000 | csbs      |
+| AR        | s        | 4500000 |      4 | vedu   |  19000 | Civil     |
+| civil     | a        |  450000 |      4 | vedu   |  19000 | Civil     |
+| mech      | C        | 2800000 |      4 | vedu   |  19000 | Civil     |
+| CS        | A        | 2700000 |      4 | vedu   |  19000 | Civil     |
+| IT        | b        | 2600000 |      4 | vedu   |  19000 | Civil     |
++-----------+----------+---------+--------+--------+--------+-----------+
+25 rows in set (0.00 sec)
+
+mysql> SELECT* FROM department as p SELF JOIN department as q;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELF JOIN department as q' at line 1
+mysql> SELECT* FROM department p SELF JOIN department q;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELF JOIN department q' at line 1
+mysql> SELECT* FROM department p, department q;
++-----------+----------+---------+-----------+----------+---------+
+| dept_name | building | budget  | dept_name | building | budget  |
++-----------+----------+---------+-----------+----------+---------+
+| AR        | s        | 4500000 | IT        | b        | 2600000 |
+| civil     | a        |  450000 | IT        | b        | 2600000 |
+| mech      | C        | 2800000 | IT        | b        | 2600000 |
+| CS        | A        | 2700000 | IT        | b        | 2600000 |
+| IT        | b        | 2600000 | IT        | b        | 2600000 |
+| AR        | s        | 4500000 | CS        | A        | 2700000 |
+| civil     | a        |  450000 | CS        | A        | 2700000 |
+| mech      | C        | 2800000 | CS        | A        | 2700000 |
+| CS        | A        | 2700000 | CS        | A        | 2700000 |
+| IT        | b        | 2600000 | CS        | A        | 2700000 |
+| AR        | s        | 4500000 | mech      | C        | 2800000 |
+| civil     | a        |  450000 | mech      | C        | 2800000 |
+| mech      | C        | 2800000 | mech      | C        | 2800000 |
+| CS        | A        | 2700000 | mech      | C        | 2800000 |
+| IT        | b        | 2600000 | mech      | C        | 2800000 |
+| AR        | s        | 4500000 | civil     | a        |  450000 |
+| civil     | a        |  450000 | civil     | a        |  450000 |
+| mech      | C        | 2800000 | civil     | a        |  450000 |
+| CS        | A        | 2700000 | civil     | a        |  450000 |
+| IT        | b        | 2600000 | civil     | a        |  450000 |
+| AR        | s        | 4500000 | AR        | s        | 4500000 |
+| civil     | a        |  450000 | AR        | s        | 4500000 |
+| mech      | C        | 2800000 | AR        | s        | 4500000 |
+| CS        | A        | 2700000 | AR        | s        | 4500000 |
+| IT        | b        | 2600000 | AR        | s        | 4500000 |
++-----------+----------+---------+-----------+----------+---------+
+25 rows in set (0.00 sec)
+
+mysql> SELECT* FROM department p, department q where p.dept_name=q.dept_name;
++-----------+----------+---------+-----------+----------+---------+
+| dept_name | building | budget  | dept_name | building | budget  |
++-----------+----------+---------+-----------+----------+---------+
+| IT        | b        | 2600000 | IT        | b        | 2600000 |
+| CS        | A        | 2700000 | CS        | A        | 2700000 |
+| mech      | C        | 2800000 | mech      | C        | 2800000 |
+| civil     | a        |  450000 | civil     | a        |  450000 |
+| AR        | s        | 4500000 | AR        | s        | 4500000 |
++-----------+----------+---------+-----------+----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT* FROM department CROSS JOIN employee ON department.dept_name=employee.dept_name GROUP BY building;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'employee.department.dept_name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> SELECT* FROM department CROSS JOIN employee ON department.dept_name=employee.dept_name GROUP BY building;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'employee.department.dept_name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> SELECT* FROM department p, department q where p.dept_name=q.dept_name;
++-----------+----------+---------+-----------+----------+---------+
+| dept_name | building | budget  | dept_name | building | budget  |
++-----------+----------+---------+-----------+----------+---------+
+| IT        | b        | 2600000 | IT        | b        | 2600000 |
+| CS        | A        | 2700000 | CS        | A        | 2700000 |
+| mech      | C        | 2800000 | mech      | C        | 2800000 |
+| civil     | a        |  450000 | civil     | a        |  450000 |
+| AR        | s        | 4500000 | AR        | s        | 4500000 |
++-----------+----------+---------+-----------+----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT* FROM department p, department q where p.dept_name=q.dept_name;
++-----------+----------+---------+-----------+----------+---------+
+| dept_name | building | budget  | dept_name | building | budget  |
++-----------+----------+---------+-----------+----------+---------+
+| IT        | b        | 2600000 | IT        | b        | 2600000 |
+| CS        | A        | 2700000 | CS        | A        | 2700000 |
+| mech      | C        | 2800000 | mech      | C        | 2800000 |
+| civil     | a        |  450000 | civil     | a        |  450000 |
+| AR        | s        | 4500000 | AR        | s        | 4500000 |
++-----------+----------+---------+-----------+----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT* FROM department p, department q GROUP BY building where p.dept_name=q.dept_name;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where p.dept_name=q.dept_name' at line 1
+mysql> SELECT* FROM department p, department q  where p.dept_name=q.dept_name;
++-----------+----------+---------+-----------+----------+---------+
+| dept_name | building | budget  | dept_name | building | budget  |
++-----------+----------+---------+-----------+----------+---------+
+| IT        | b        | 2600000 | IT        | b        | 2600000 |
+| CS        | A        | 2700000 | CS        | A        | 2700000 |
+| mech      | C        | 2800000 | mech      | C        | 2800000 |
+| civil     | a        |  450000 | civil     | a        |  450000 |
+| AR        | s        | 4500000 | AR        | s        | 4500000 |
++-----------+----------+---------+-----------+----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> insert into employee values(5,"barge",460000,"csbs");
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into employee values(6,"Parth",46009080,"sales");
+Query OK, 1 row affected (0.12 sec)
+
+mysql> insert into employee values(7,"SAWALKAR",4309080,"POLICY");
+Query OK, 1 row affected (0.15 sec)
+
+mysql> select * from employee;
++--------+----------+----------+-----------+
+| emp_id | name     | salary   | dept_name |
++--------+----------+----------+-----------+
+|      1 | andy     |   100000 | IT        |
+|      2 | akash    |   200000 | cs        |
+|      3 | bhavik   |   300000 | mech      |
+|      3 | sharad   |    19000 | csbs      |
+|      4 | vedu     |    19000 | Civil     |
+|      5 | barge    |   460000 | csbs      |
+|      6 | Parth    | 46009080 | sales     |
+|      7 | SAWALKAR |  4309080 | POLICY    |
++--------+----------+----------+-----------+
+8 rows in set (0.01 sec)
+
+mysql> select * from employee ORDER BY salary;
++--------+----------+----------+-----------+
+| emp_id | name     | salary   | dept_name |
++--------+----------+----------+-----------+
+|      3 | sharad   |    19000 | csbs      |
+|      4 | vedu     |    19000 | Civil     |
+|      1 | andy     |   100000 | IT        |
+|      2 | akash    |   200000 | cs        |
+|      3 | bhavik   |   300000 | mech      |
+|      5 | barge    |   460000 | csbs      |
+|      7 | SAWALKAR |  4309080 | POLICY    |
+|      6 | Parth    | 46009080 | sales     |
++--------+----------+----------+-----------+
+8 rows in set (0.00 sec)
+
+mysql> select *from employee where dept_name in(select dept_name from department);
++--------+--------+--------+-----------+
+| emp_id | name   | salary | dept_name |
++--------+--------+--------+-----------+
+|      1 | andy   | 100000 | IT        |
+|      2 | akash  | 200000 | cs        |
+|      3 | bhavik | 300000 | mech      |
+|      4 | vedu   |  19000 | Civil     |
++--------+--------+--------+-----------+
+4 rows in set (0.00 sec)
+mysql> select *from department where budget > ANY(select salary from employee);
++-----------+----------+---------+
+| dept_name | building | budget  |
++-----------+----------+---------+
+| IT        | b        | 2600000 |
+| CS        | A        | 2700000 |
+| mech      | C        | 2800000 |
+| civil     | a        |  450000 |
+| AR        | s        | 4500000 |
++-----------+----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select *from department where budget > ANY(select salary from employee);
++-----------+----------+---------+
+| dept_name | building | budget  |
++-----------+----------+---------+
+| IT        | b        | 2600000 |
+| CS        | A        | 2700000 |
+| mech      | C        | 2800000 |
+| civil     | a        |  450000 |
+| AR        | s        | 4500000 |
++-----------+----------+---------+
+5 rows in set (0.00 sec)
